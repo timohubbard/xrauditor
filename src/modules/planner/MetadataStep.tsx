@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { ProjectMeta } from "@/data/schema";
+import { ProjectMeta, WorkflowTemplate } from "@/data/schema";
 
 interface Props {
+    template: WorkflowTemplate;
     initialData: ProjectMeta;
     onNext: (data: ProjectMeta) => void;
 }
 
-export default function MetadataStep({ initialData, onNext }: Props) {
+export default function MetadataStep({ template, initialData, onNext }: Props) {
     const [data, setData] = useState<ProjectMeta>(initialData);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -20,13 +21,13 @@ export default function MetadataStep({ initialData, onNext }: Props) {
         onNext(data);
     };
 
-    const handleCheckbox = (badge: "badge2" | "badge3") => {
+    const handleCheckbox = (badgeId: string) => {
         setData((prev) => {
             const current = new Set(prev.targetBadges);
-            if (current.has(badge)) {
-                current.delete(badge);
+            if (current.has(badgeId)) {
+                current.delete(badgeId);
             } else {
-                current.add(badge);
+                current.add(badgeId);
             }
             return { ...prev, targetBadges: Array.from(current) };
         });
@@ -75,24 +76,20 @@ export default function MetadataStep({ initialData, onNext }: Props) {
             <div>
                 <span className="block text-sm font-medium text-gray-700 mb-2">Target Badges</span>
                 <div className="space-y-2">
-                    <label className="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="h-4 w-4 text-brand-teal border-gray-300 rounded focus:ring-brand-teal"
-                            checked={data.targetBadges.includes("badge2")}
-                            onChange={() => handleCheckbox("badge2")}
-                        />
-                        <span className="ml-3 font-medium text-gray-900">Badge 2 — Open Data</span>
-                    </label>
-                    <label className="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            className="h-4 w-4 text-brand-teal border-gray-300 rounded focus:ring-brand-teal"
-                            checked={data.targetBadges.includes("badge3")}
-                            onChange={() => handleCheckbox("badge3")}
-                        />
-                        <span className="ml-3 font-medium text-gray-900">Badge 3 — Open Analysis Code</span>
-                    </label>
+                    {template.badges.map(badge => (
+                        <label key={badge.id} className="flex items-center p-3 border rounded-md hover:bg-gray-50 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                className="h-4 w-4 text-brand-teal border-gray-300 rounded focus:ring-brand-teal"
+                                checked={data.targetBadges.includes(badge.id)}
+                                onChange={() => handleCheckbox(badge.id)}
+                            />
+                            <span className="ml-3 font-medium text-gray-900">{badge.label}</span>
+                        </label>
+                    ))}
+                    {template.badges.length === 0 && (
+                        <p className="text-sm text-gray-500 italic px-2">This workflow template does not define any badges.</p>
+                    )}
                 </div>
             </div>
 

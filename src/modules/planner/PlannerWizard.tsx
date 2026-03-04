@@ -4,11 +4,16 @@ import { useState } from "react";
 import MetadataStep from "./MetadataStep";
 import QuestionnaireStep from "./QuestionnaireStep";
 import ChecklistView from "./ChecklistView";
-import { ProjectMeta, ProjectProfile, GeneratedChecklist, SCHEMA_VERSION } from "@/data/schema";
+import { ProjectMeta, ProjectProfileValues, GeneratedChecklist, SCHEMA_VERSION, WorkflowTemplate } from "@/data/schema";
 import { generateChecklist } from "@/data/checklistLogic";
+import { xrAuditorDefaultTemplate } from "@/data/defaultTemplate";
 
 export default function PlannerWizard() {
     const [step, setStep] = useState<1 | 2 | 3>(1);
+
+    // In the future this could be loaded from local storage or passed via props
+    const [template] = useState<WorkflowTemplate>(xrAuditorDefaultTemplate);
+
     const [meta, setMeta] = useState<ProjectMeta>({
         projectTitle: "",
         researcherName: "",
@@ -16,24 +21,7 @@ export default function PlannerWizard() {
         targetBadges: [],
     });
 
-    const [profile, setProfile] = useState<ProjectProfile>({
-        usesArtificialLocomotion: false,
-        hasVirtualAvatar: false,
-        hasVirtualHumanoids: false,
-        hasObjectInteraction: false,
-        usesEyeTracking: false,
-        hasMultiStreamSensors: false,
-        hasSixDofData: false,
-        usesStandardBatteryInstruments: false,
-        sessionLongerThan30Min: false,
-        isMultiSite: false,
-        isConfirmatory: false,
-        collectsBiometricData: false,
-        environmentCodeShareable: false,
-        participantDataShareable: false,
-        hasMultipleConditions: false,
-    });
-
+    const [profile, setProfile] = useState<ProjectProfileValues>({});
     const [checklist, setChecklist] = useState<GeneratedChecklist | null>(null);
 
     const handleNextToQuestionnaire = (newMeta: ProjectMeta) => {
@@ -41,9 +29,9 @@ export default function PlannerWizard() {
         setStep(2);
     };
 
-    const handleGenerate = (newProfile: ProjectProfile) => {
+    const handleGenerate = (newProfile: ProjectProfileValues) => {
         setProfile(newProfile);
-        const generated = generateChecklist(newProfile, meta.targetBadges);
+        const generated = generateChecklist(template, newProfile, meta.targetBadges);
         setChecklist(generated);
         setStep(3);
     };
@@ -51,6 +39,7 @@ export default function PlannerWizard() {
     const fullProjectJson = checklist ? {
         schemaVersion: SCHEMA_VERSION,
         generatedAt: new Date().toISOString(),
+        workflowTemplate: template,
         projectMeta: meta,
         projectProfile: profile,
         generatedChecklist: checklist,
@@ -74,10 +63,15 @@ export default function PlannerWizard() {
             <div className="bg-white shadow sm:rounded-lg border border-gray-200">
                 <div className="px-4 py-5 sm:p-6 sm:px-8 sm:py-8">
                     {step === 1 && (
-                        <MetadataStep initialData={meta} onNext={handleNextToQuestionnaire} />
+                        <MetadataStep
+                            template={template}
+                            initialData={meta}
+                            onNext={handleNextToQuestionnaire}
+                        />
                     )}
                     {step === 2 && (
                         <QuestionnaireStep
+                            template={template}
                             initialData={profile}
                             onBack={() => setStep(1)}
                             onGenerate={handleGenerate}
@@ -85,6 +79,7 @@ export default function PlannerWizard() {
                     )}
                     {step === 3 && checklist && fullProjectJson && (
                         <ChecklistView
+                            template={template}
                             checklist={checklist}
                             projectJson={fullProjectJson}
                             onBack={() => setStep(2)}

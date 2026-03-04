@@ -17,21 +17,30 @@ export default function Navbar() {
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                             <Link
                                 href="/"
-                                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${pathname === "/"
-                                        ? "border-brand-teal text-white"
-                                        : "border-transparent text-gray-300 hover:border-gray-300 hover:text-white"
+                                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${pathname === '/'
+                                        ? 'border-brand-teal text-white'
+                                        : 'border-transparent text-gray-300 hover:text-white hover:border-gray-300'
                                     }`}
                             >
                                 Plan Project
                             </Link>
                             <Link
                                 href="/audit"
-                                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${pathname === "/audit"
-                                        ? "border-brand-teal text-white"
-                                        : "border-transparent text-gray-300 hover:border-gray-300 hover:text-white"
+                                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${pathname === '/audit'
+                                        ? 'border-brand-teal text-white'
+                                        : 'border-transparent text-gray-300 hover:text-white hover:border-gray-300'
                                     }`}
                             >
                                 Audit Project
+                            </Link>
+                            <Link
+                                href="/builder"
+                                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${pathname === '/builder'
+                                        ? 'border-brand-teal text-white'
+                                        : 'border-transparent text-gray-300 hover:text-white hover:border-gray-300'
+                                    }`}
+                            >
+                                Workflow Builder
                             </Link>
                         </div>
                     </div>

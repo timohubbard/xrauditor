@@ -1,45 +1,47 @@
-import { ProjectProfile, GeneratedChecklist, ChecklistItem } from "./schema";
-import { BADGE_2_ITEMS, BADGE_3_ITEMS, ChecklistItemDefinition } from "./checklistItems";
+import { WorkflowTemplate, ProjectProfileValues, GeneratedChecklist, ChecklistItem } from "./schema";
 
 export function generateChecklist(
-    profile: ProjectProfile,
-    targetBadges: ("badge2" | "badge3")[]
+    template: WorkflowTemplate,
+    profileValues: ProjectProfileValues,
+    targetBadges: string[]
 ): GeneratedChecklist {
-    const result: GeneratedChecklist = {
-        badge2: [],
-        badge3: [],
-    };
+    const result: GeneratedChecklist = {};
 
-    if (targetBadges.includes("badge2")) {
-        result.badge2 = evaluateItems(BADGE_2_ITEMS, profile);
-    }
+    // Initialize empty arrays for targeted badges
+    targetBadges.forEach((badgeId) => {
+        result[badgeId] = [];
+    });
 
-    if (targetBadges.includes("badge3")) {
-        result.badge3 = evaluateItems(BADGE_3_ITEMS, profile);
-    }
+    // Evaluate each checklist item in the template
+    template.checklistItems.forEach((item) => {
+        // Skip if the user didn't target the badge this item belongs to
+        if (!targetBadges.includes(item.badgeId)) {
+            return;
+        }
 
-    return result;
-}
+        // Determine if the item is required based on its conditional link
+        let isIncluded = item.required;
 
-function evaluateItems(
-    items: ChecklistItemDefinition[],
-    profile: ProjectProfile
-): ChecklistItem[] {
-    return items
-        .filter((item) => {
-            if (item.required) return true;
-            if (item.condition) return item.condition(profile);
-            return false;
-        })
-        .map((item) => {
-            // Return a clean ChecklistItem without the condition function
-            // for safe JSON serialization.
-            return {
+        if (!isIncluded && item.conditionalOnFeatureId) {
+            // If the feature flag is true in the user's profile context, include it
+            if (profileValues[item.conditionalOnFeatureId] === true) {
+                isIncluded = true;
+            }
+        }
+
+        if (isIncluded) {
+            // Create a clean ChecklistItem without the workflow mapping engine metadata
+            const cleanItem: ChecklistItem = {
                 id: item.id,
                 category: item.category,
                 label: item.label,
                 description: item.description,
                 required: item.required,
             };
-        });
+
+            result[item.badgeId].push(cleanItem);
+        }
+    });
+
+    return result;
 }

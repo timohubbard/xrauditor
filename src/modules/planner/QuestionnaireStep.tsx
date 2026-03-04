@@ -1,16 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import { ProjectProfile } from "@/data/schema";
+import { useState, useEffect } from "react";
+import { ProjectProfileValues, WorkflowTemplate } from "@/data/schema";
 
 interface Props {
-    initialData: ProjectProfile;
+    template: WorkflowTemplate;
+    initialData: ProjectProfileValues;
     onBack: () => void;
-    onGenerate: (data: ProjectProfile) => void;
+    onGenerate: (data: ProjectProfileValues) => void;
 }
 
-export default function QuestionnaireStep({ initialData, onBack, onGenerate }: Props) {
-    const [data, setData] = useState<ProjectProfile>(initialData);
+export default function QuestionnaireStep({ template, initialData, onBack, onGenerate }: Props) {
+    const [data, setData] = useState<ProjectProfileValues>(initialData);
+
+    // Initialize any missing feature keys to false safely
+    useEffect(() => {
+        setData((prev) => {
+            const next = { ...prev };
+            template.features.forEach(f => {
+                if (next[f.id] === undefined) {
+                    next[f.id] = false;
+                }
+            });
+            return next;
+        });
+    }, [template.features]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,151 +32,68 @@ export default function QuestionnaireStep({ initialData, onBack, onGenerate }: P
         onGenerate(data);
     };
 
-    const setField = (field: keyof ProjectProfile, value: boolean) => {
-        setData((prev) => ({ ...prev, [field]: value }));
+    const setField = (fieldId: string, value: boolean) => {
+        setData((prev) => ({ ...prev, [fieldId]: value }));
     };
 
-    const Question = ({
-        id,
-        label,
-        description,
-        field
-    }: {
-        id: string;
-        label: string;
-        description?: string;
-        field: keyof ProjectProfile;
-    }) => (
-        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                <div className="mb-4 sm:mb-0 sm:pr-8">
-                    <label htmlFor={id} className="block text-base font-semibold text-gray-900 mb-1">
-                        {label}
-                    </label>
-                    {description && <p className="text-sm text-gray-600">{description}</p>}
+    const renderQuestions = () => {
+        if (template.features.length === 0) {
+            return (
+                <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-lg border border-gray-200">
+                    This workflow template does not contain any conditional study features. You can proceed directly to checklist generation.
                 </div>
-                <div className="flex items-center space-x-4 shrink-0">
-                    <label className="flex items-center cursor-pointer">
-                        <input
-                            type="radio"
-                            name={id}
-                            className="h-5 w-5 text-brand-teal focus:ring-brand-teal"
-                            checked={data[field] === true}
-                            onChange={() => setField(field, true)}
-                            required
-                        />
-                        <span className="ml-2 font-medium">Yes</span>
-                    </label>
-                    <label className="flex items-center cursor-pointer">
-                        <input
-                            type="radio"
-                            name={id}
-                            className="h-5 w-5 text-brand-amber focus:ring-brand-amber"
-                            checked={data[field] === false}
-                            onChange={() => setField(field, false)}
-                        />
-                        <span className="ml-2 font-medium">No</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    );
+            );
+        }
+
+        // Group features by Category
+        const categories = Array.from(new Set(template.features.map(f => f.category || "General Questions")));
+
+        return categories.map(category => (
+            <section key={category}>
+                <h3 className="text-xl font-bold text-brand-navy mb-4 border-b pb-2">{category}</h3>
+                {template.features.filter(f => (f.category || "General Questions") === category).map(feature => (
+                    <div key={feature.id} className="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <div className="mb-4 sm:mb-0 sm:pr-8">
+                                <label htmlFor={feature.id} className="block text-base font-semibold text-gray-900 mb-1">
+                                    {feature.label}
+                                </label>
+                                {feature.description && <p className="text-sm text-gray-600">{feature.description}</p>}
+                            </div>
+                            <div className="flex items-center space-x-4 shrink-0">
+                                <label className="flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name={feature.id}
+                                        className="h-5 w-5 text-brand-teal focus:ring-brand-teal"
+                                        checked={data[feature.id] === true}
+                                        onChange={() => setField(feature.id, true)}
+                                        required
+                                    />
+                                    <span className="ml-2 font-medium">Yes</span>
+                                </label>
+                                <label className="flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name={feature.id}
+                                        className="h-5 w-5 text-brand-amber focus:ring-brand-amber"
+                                        checked={data[feature.id] === false}
+                                        onChange={() => setField(feature.id, false)}
+                                    />
+                                    <span className="ml-2 font-medium">No</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </section>
+        ));
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8">
 
-            <section>
-                <h3 className="text-xl font-bold text-brand-navy mb-4 border-b pb-2">SECTION A — Study Design</h3>
-                <Question
-                    id="q1"
-                    field="usesArtificialLocomotion"
-                    label="Does your study use artificial locomotion?"
-                    description="(e.g., teleportation, joystick, continuous movement — anything other than the participant physically walking)"
-                />
-                <Question
-                    id="q2"
-                    field="hasVirtualAvatar"
-                    label="Does your study include a virtual body or avatar that participants control or embody?"
-                />
-                <Question
-                    id="q3"
-                    field="hasVirtualHumanoids"
-                    label="Does your study include virtual humanoid characters, NPCs, or virtual agents?"
-                    description="(Other than the participant's own avatar)"
-                />
-                <Question
-                    id="q4"
-                    field="hasObjectInteraction"
-                    label="Does your study involve participants interacting with virtual objects?"
-                    description="(Grabbing, manipulating, using controllers or hand-tracking)"
-                />
-                <Question
-                    id="q5"
-                    field="usesEyeTracking"
-                    label="Does your study use eye-tracking hardware?"
-                />
-                <Question
-                    id="q6"
-                    field="hasMultiStreamSensors"
-                    label="Will you record data from more than one sensor stream simultaneously?"
-                    description="(e.g., HMD motion + physiological signals, or HMD + eye-tracker)"
-                />
-                <Question
-                    id="q7"
-                    field="hasSixDofData"
-                    label="Will you record 6DoF head or controller motion data (position + rotation)?"
-                />
-                <Question
-                    id="q8"
-                    field="usesStandardBatteryInstruments"
-                    label="Will you administer any of the standard battery instruments?"
-                    description="(IPQ, SUS, SPES, CSQ-VR, IVBO, VEQ, EQ, SPS, Humanness Index)"
-                />
-            </section>
-
-            <section>
-                <h3 className="text-xl font-bold text-brand-navy mb-4 border-b pb-2">SECTION B — Procedural</h3>
-                <Question
-                    id="q9"
-                    field="sessionLongerThan30Min"
-                    label="Will any sessions last longer than 30 minutes?"
-                />
-                <Question
-                    id="q10"
-                    field="isMultiSite"
-                    label="Is this a multi-site or multi-lab study?"
-                />
-            </section>
-
-            <section>
-                <h3 className="text-xl font-bold text-brand-navy mb-4 border-b pb-2">SECTION C — Ethics & Sharing</h3>
-                <Question
-                    id="q11"
-                    field="isConfirmatory"
-                    label="Is your study confirmatory / hypothesis-driven (as opposed to exploratory)?"
-                />
-                <Question
-                    id="q12"
-                    field="collectsBiometricData"
-                    label="Will you collect biometric or otherwise identifiable data?"
-                    description="(e.g., eye movement, physiological signals, facial capture)"
-                />
-                <Question
-                    id="q13"
-                    field="environmentCodeShareable"
-                    label="Is your VR environment code shareable without IP restrictions?"
-                />
-                <Question
-                    id="q14"
-                    field="participantDataShareable"
-                    label="Can your participant data be shared openly (no consent or ethics restrictions)?"
-                />
-                <Question
-                    id="q15"
-                    field="hasMultipleConditions"
-                    label="Does your study use multiple conditions or a longitudinal design?"
-                />
-            </section>
+            {renderQuestions()}
 
             <div className="flex justify-between pt-4 border-t border-gray-200">
                 <button

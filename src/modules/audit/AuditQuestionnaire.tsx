@@ -9,10 +9,10 @@ interface Props {
 }
 
 export default function AuditQuestionnaire({ projectJson, onFinish }: Props) {
-    const allItems = [
-        ...(projectJson.projectMeta.targetBadges.includes("badge2") ? projectJson.generatedChecklist.badge2 : []),
-        ...(projectJson.projectMeta.targetBadges.includes("badge3") ? projectJson.generatedChecklist.badge3 : [])
-    ];
+    // Flatten checklist items based on targeted badges
+    const allItems = projectJson.projectMeta.targetBadges.flatMap(badgeId =>
+        projectJson.generatedChecklist[badgeId] || []
+    );
 
     const [answers, setAnswers] = useState<Record<string, AuditItemResult>>({});
 
@@ -40,21 +40,20 @@ export default function AuditQuestionnaire({ projectJson, onFinish }: Props) {
 
         const items = Object.values(answers);
 
-        const evaluateBadge = (badgeId: "badge2" | "badge3"): BadgeAuditStatus => {
+        const evaluateBadge = (badgeId: string): BadgeAuditStatus => {
             if (!projectJson.projectMeta.targetBadges.includes(badgeId)) return "pending";
 
-            const badgeItems = projectJson.generatedChecklist[badgeId];
+            const badgeItems = projectJson.generatedChecklist[badgeId] || [];
             if (badgeItems.length === 0) return "pass";
 
             let hasPartial = false;
 
             for (const item of badgeItems) {
                 const result = answers[item.id];
-
                 if (result.answer === "no") return "fail";
 
                 if (result.answer === "partial") {
-                    // If an Always Required item is partial, it's a fail.
+                    // If an item is required, 'partial' translates to fail
                     if (item.required) return "fail";
                     hasPartial = true;
                 }
@@ -63,10 +62,15 @@ export default function AuditQuestionnaire({ projectJson, onFinish }: Props) {
             return hasPartial ? "conditional_pass" : "pass";
         };
 
+        // dynamically assign badge statuses based on the template definitions
+        const badgeStatuses: Record<string, BadgeAuditStatus> = {};
+        projectJson.workflowTemplate.badges.forEach((badge) => {
+            badgeStatuses[badge.id] = evaluateBadge(badge.id);
+        });
+
         const results: AuditResults = {
             auditedAt: new Date().toISOString(),
-            badge2Status: evaluateBadge("badge2"),
-            badge3Status: evaluateBadge("badge3"),
+            badgeStatuses,
             items
         };
 
@@ -88,8 +92,8 @@ export default function AuditQuestionnaire({ projectJson, onFinish }: Props) {
             <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-brand-navy border-b border-gray-200 pb-2">{badgeName}</h3>
                 {categories.map(category => (
-                    <div key={category} className="space-y-4">
-                        <h4 className="text-lg font-semibold text-gray-700">{category}</h4>
+                    <div key={category as string} className="space-y-4">
+                        <h4 className="text-lg font-semibold text-gray-700">{category as string}</h4>
                         {items.filter(i => i.category === category).map(item => {
                             const ans = answers[item.id];
                             const showNotes = ans?.answer === "partial" || ans?.answer === "no";
@@ -155,8 +159,15 @@ export default function AuditQuestionnaire({ projectJson, onFinish }: Props) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-10">
-                {projectJson.projectMeta.targetBadges.includes("badge2") && renderGroup("Badge 2 — Open Data", projectJson.generatedChecklist.badge2)}
-                {projectJson.projectMeta.targetBadges.includes("badge3") && renderGroup("Badge 3 — Open Analysis Code", projectJson.generatedChecklist.badge3)}
+
+                {projectJson.workflowTemplate.badges.map(badge => {
+                    if (!projectJson.projectMeta.targetBadges.includes(badge.id)) return null;
+                    return (
+                        <div key={badge.id}>
+                            {renderGroup(badge.label, projectJson.generatedChecklist[badge.id] || [])}
+                        </div>
+                    )
+                })}
 
                 <div className="pt-6 border-t border-gray-200 flex justify-end">
                     <button

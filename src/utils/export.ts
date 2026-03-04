@@ -15,13 +15,13 @@ export function exportJsonAsBlob(data: ProjectJson): void {
 }
 
 export function exportReportAsText(data: ProjectJson): void {
-    if (!data.auditResults) return;
+    if (!data.auditResults || !data.workflowTemplate) return;
 
     const results = data.auditResults;
     const lines: string[] = [];
 
     lines.push(`=======================================================`);
-    lines.push(` VR/XR Open Science Badge - Audit Report`);
+    lines.push(` Open Science Badge - Audit Report`);
     lines.push(`=======================================================`);
     lines.push(``);
     lines.push(`Project Title: ${data.projectMeta.projectTitle}`);
@@ -31,20 +31,22 @@ export function exportReportAsText(data: ProjectJson): void {
     lines.push(``);
     lines.push(`--- SUMMARY ---`);
 
-    if (data.projectMeta.targetBadges.includes("badge2")) {
-        lines.push(`Badge 2 (Open Data) Status: ${results.badge2Status.toUpperCase()}`);
-    }
-    if (data.projectMeta.targetBadges.includes("badge3")) {
-        lines.push(`Badge 3 (Open Analysis Code) Status: ${results.badge3Status.toUpperCase()}`);
-    }
+    data.workflowTemplate.badges.forEach((badge) => {
+        if (data.projectMeta.targetBadges.includes(badge.id)) {
+            const status = results.badgeStatuses[badge.id] || "PENDING";
+            lines.push(`${badge.label} Status: ${status.toUpperCase()}`);
+        }
+    });
+
     lines.push(``);
     lines.push(`--- DETAILED AUDIT ---`);
 
+    // Flatten checklist items for lookup
+    const flatChecklist = data.workflowTemplate.badges.flatMap(b => data.generatedChecklist[b.id] || []);
+
     results.items.forEach(auditItem => {
         // Find item context
-        const reqItem =
-            data.generatedChecklist.badge2.find(i => i.id === auditItem.id) ||
-            data.generatedChecklist.badge3.find(i => i.id === auditItem.id);
+        const reqItem = flatChecklist.find(i => i.id === auditItem.id);
 
         if (reqItem) {
             lines.push(`Requirement: ${reqItem.label} (${reqItem.category})`);

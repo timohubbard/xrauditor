@@ -1,15 +1,16 @@
 "use client";
 
-import { GeneratedChecklist, ProjectJson } from "@/data/schema";
+import { GeneratedChecklist, ProjectJson, WorkflowTemplate } from "@/data/schema";
 import { exportJsonAsBlob } from "@/utils/export";
 
 interface Props {
+    template: WorkflowTemplate;
     checklist: GeneratedChecklist;
     projectJson: ProjectJson;
     onBack: () => void;
 }
 
-export default function ChecklistView({ checklist, projectJson, onBack }: Props) {
+export default function ChecklistView({ template, checklist, projectJson, onBack }: Props) {
     const handleDownload = () => {
         exportJsonAsBlob(projectJson);
         alert("Project saved. Load this file in the Audit module when your project is complete.");
@@ -37,63 +38,43 @@ export default function ChecklistView({ checklist, projectJson, onBack }: Props)
                 </div>
             </div>
 
-            {projectJson.projectMeta.targetBadges.includes("badge2") && (
-                <section>
-                    <h3 className="text-xl font-bold text-brand-teal mb-4 border-b border-brand-teal pb-2">
-                        Badge 2 — Open Data Requirements
-                    </h3>
-                    <div className="space-y-4">
-                        {checklist.badge2.map((item) => (
-                            <div key={item.id} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm flex items-start">
-                                <div className="flex-shrink-0 mt-1 mr-4">
-                                    <input type="checkbox" className="h-5 w-5 text-brand-teal rounded border-gray-300 focus:ring-brand-teal cursor-pointer" />
-                                </div>
-                                <div>
-                                    <div className="flex items-center space-x-3 mb-2 flex-wrap gap-y-2">
-                                        <span className="font-bold text-gray-900">{item.label}</span>
-                                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${getCategoryColor(item.category)}`}>
-                                            {item.category}
-                                        </span>
-                                    </div>
-                                    <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                        {checklist.badge2.length === 0 && (
-                            <p className="text-gray-500 italic px-4">No checklist items generated.</p>
-                        )}
-                    </div>
-                </section>
-            )}
+            {template.badges.map(badge => {
+                // Only render the section if the user selected this badge
+                if (!projectJson.projectMeta.targetBadges.includes(badge.id)) {
+                    return null;
+                }
 
-            {projectJson.projectMeta.targetBadges.includes("badge3") && (
-                <section>
-                    <h3 className="text-xl font-bold text-brand-green mb-4 border-b border-brand-green pb-2">
-                        Badge 3 — Open Analysis Code Requirements
-                    </h3>
-                    <div className="space-y-4">
-                        {checklist.badge3.map((item) => (
-                            <div key={item.id} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm flex items-start">
-                                <div className="flex-shrink-0 mt-1 mr-4">
-                                    <input type="checkbox" className="h-5 w-5 text-brand-green rounded border-gray-300 focus:ring-brand-green cursor-pointer" />
-                                </div>
-                                <div>
-                                    <div className="flex items-center space-x-3 mb-2 flex-wrap gap-y-2">
-                                        <span className="font-bold text-gray-900">{item.label}</span>
-                                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${getCategoryColor(item.category)}`}>
-                                            {item.category}
-                                        </span>
+                const items = checklist[badge.id] || [];
+
+                return (
+                    <section key={badge.id}>
+                        <h3 className="text-xl font-bold text-brand-teal mb-4 border-b border-brand-teal pb-2">
+                            {badge.label} Requirements
+                        </h3>
+                        <div className="space-y-4">
+                            {items.map((item) => (
+                                <div key={item.id} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm flex items-start">
+                                    <div className="flex-shrink-0 mt-1 mr-4">
+                                        <input type="checkbox" className="h-5 w-5 text-brand-teal rounded border-gray-300 focus:ring-brand-teal cursor-pointer" />
                                     </div>
-                                    <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                                    <div>
+                                        <div className="flex items-center space-x-3 mb-2 flex-wrap gap-y-2">
+                                            <span className="font-bold text-gray-900">{item.label}</span>
+                                            <span className={`text-xs px-2 py-1 rounded-full font-medium ${getCategoryColor(item.category)}`}>
+                                                {item.category}
+                                            </span>
+                                        </div>
+                                        <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                        {checklist.badge3.length === 0 && (
-                            <p className="text-gray-500 italic px-4">No checklist items generated.</p>
-                        )}
-                    </div>
-                </section>
-            )}
+                            ))}
+                            {items.length === 0 && (
+                                <p className="text-gray-500 italic px-4">No checklist items generated.</p>
+                            )}
+                        </div>
+                    </section>
+                );
+            })}
 
             <div className="pt-6">
                 <button
