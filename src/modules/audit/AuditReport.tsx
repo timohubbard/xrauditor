@@ -2,6 +2,9 @@
 
 import { ProjectJson, BadgeAuditStatus } from "@/data/schema";
 import { exportJsonAsBlob, exportReportAsText } from "@/utils/export";
+import { slugify } from "@/utils/slugify";
+import { pdf } from "@react-pdf/renderer";
+import PdfAuditReport from "@/components/PdfAuditReport";
 
 interface Props {
     projectJson: ProjectJson;
@@ -12,8 +15,30 @@ export default function AuditReportView({ projectJson }: Props) {
         exportJsonAsBlob(projectJson);
     };
 
-    const handleExportPdf = () => {
-        exportReportAsText(projectJson);
+    const handleExportPdf = async () => {
+        if (!projectJson.auditResults) return;
+
+        try {
+            // Use the @react-pdf/renderer pdf() function to generate a blob on the fly
+            const doc = <PdfAuditReport data={projectJson} />;
+            const blob = await pdf(doc).toBlob();
+
+            const url = URL.createObjectURL(blob);
+            const dateStr = new Date(projectJson.auditResults.auditedAt).toISOString().split("T")[0];
+            const filename = `VR_Badge_AuditReport_${slugify(projectJson.projectMeta.projectTitle)}_${dateStr}.pdf`;
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("PDF generation failed:", err);
+            alert("Failed to generate PDF. Falling back to plain text report.");
+            exportReportAsText(projectJson); // fallback
+        }
     };
 
     const getStatusColor = (status: BadgeAuditStatus) => {
@@ -53,7 +78,7 @@ export default function AuditReportView({ projectJson }: Props) {
                         onClick={handleExportPdf}
                         className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-navy hover:bg-opacity-90 transition-colors"
                     >
-                        Download Audit Report (Plain Text)
+                        Download Audit Report (PDF)
                     </button>
                 </div>
             </div>
