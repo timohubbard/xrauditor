@@ -12,6 +12,7 @@ export interface WorkflowFeature {
     category: string; // e.g. "Study Design"
     label: string; // e.g. "Does your study use artificial locomotion?"
     description?: string;
+    badgeId?: string; // Optional ID of the Badge this belongs to
 }
 
 export interface WorkflowChecklistItem {

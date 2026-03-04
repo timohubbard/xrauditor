@@ -5,26 +5,29 @@ import { ProjectProfileValues, WorkflowTemplate } from "@/data/schema";
 
 interface Props {
     template: WorkflowTemplate;
+    targetBadges: string[];
     initialData: ProjectProfileValues;
     onBack: () => void;
     onGenerate: (data: ProjectProfileValues) => void;
 }
 
-export default function QuestionnaireStep({ template, initialData, onBack, onGenerate }: Props) {
+export default function QuestionnaireStep({ template, targetBadges, initialData, onBack, onGenerate }: Props) {
     const [data, setData] = useState<ProjectProfileValues>(initialData);
+
+    const relevantFeatures = template.features.filter(f => !f.badgeId || targetBadges.includes(f.badgeId));
 
     // Initialize any missing feature keys to false safely
     useEffect(() => {
         setData((prev) => {
             const next = { ...prev };
-            template.features.forEach(f => {
+            relevantFeatures.forEach(f => {
                 if (next[f.id] === undefined) {
                     next[f.id] = false;
                 }
             });
             return next;
         });
-    }, [template.features]);
+    }, [template.features, targetBadges]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -37,21 +40,21 @@ export default function QuestionnaireStep({ template, initialData, onBack, onGen
     };
 
     const renderQuestions = () => {
-        if (template.features.length === 0) {
+        if (relevantFeatures.length === 0) {
             return (
                 <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-lg border border-gray-200">
-                    This workflow template does not contain any conditional study features. You can proceed directly to checklist generation.
+                    This workflow template does not contain any conditional study features for your chosen target badges. You can proceed directly to checklist generation.
                 </div>
             );
         }
 
         // Group features by Category
-        const categories = Array.from(new Set(template.features.map(f => f.category || "General Questions")));
+        const categories = Array.from(new Set(relevantFeatures.map(f => f.category || "General Questions")));
 
         return categories.map(category => (
             <section key={category}>
                 <h3 className="text-xl font-bold text-brand-navy mb-4 border-b pb-2">{category}</h3>
-                {template.features.filter(f => (f.category || "General Questions") === category).map(feature => (
+                {relevantFeatures.filter(f => (f.category || "General Questions") === category).map(feature => (
                     <div key={feature.id} className="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                             <div className="mb-4 sm:mb-0 sm:pr-8">

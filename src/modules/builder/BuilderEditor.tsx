@@ -218,6 +218,18 @@ export default function BuilderEditor({ template, onChange, onSave, onReset }: P
                                                 <input type="text" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border" value={feature.label} onChange={(e) => handleUpdateFeature(feature.id, { label: e.target.value })} />
                                             </div>
                                             <div className="sm:col-span-2">
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Target Badge (Optional)</label>
+                                                <select
+                                                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border bg-white"
+                                                    value={feature.badgeId || ""}
+                                                    onChange={(e) => handleUpdateFeature(feature.id, { badgeId: e.target.value || undefined })}
+                                                >
+                                                    <option value="">None / General Feature</option>
+                                                    {template.badges.map(b => <option key={b.id} value={b.id}>{b.label}</option>)}
+                                                </select>
+                                                <p className="mt-1 text-xs text-gray-500">If selected, this feature will only be asked if the user selects the associated target badge.</p>
+                                            </div>
+                                            <div className="sm:col-span-2">
                                                 <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Description (Optional)</label>
                                                 <textarea rows={2} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border" value={feature.description || ""} onChange={(e) => handleUpdateFeature(feature.id, { description: e.target.value })} />
                                             </div>
@@ -228,7 +240,128 @@ export default function BuilderEditor({ template, onChange, onSave, onReset }: P
                         </div>
                     )}
 
-                    {/* Checklist Tab handled dynamically in next chunk */}
+                    {activeTab === "checklist" && (
+                        <div className="space-y-6">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-xl font-bold text-gray-900">Define Framework Checklist</h2>
+                                <button onClick={() => {
+                                    const newId = prompt("Enter a unique Checklist Item ID (e.g. 'c1', 'data-presence'):");
+                                    if (!newId) return;
+                                    if (template.checklistItems.find(i => i.id === newId)) {
+                                        alert("ID already in use.");
+                                        return;
+                                    }
+
+                                    const newItem = {
+                                        id: newId,
+                                        badgeId: template.badges[0]?.id || "",
+                                        category: "General",
+                                        label: "New Checklist Item",
+                                        description: "",
+                                        required: true
+                                    };
+                                    onChange({ ...template, checklistItems: [...template.checklistItems, newItem] });
+                                }} className="text-sm bg-brand-teal text-white px-3 py-1.5 rounded-md hover:bg-opacity-90">
+                                    + Add Item
+                                </button>
+                            </div>
+                            <p className="text-sm text-gray-500 mb-4">These items will be evaluated during the Audit flow based on user configurations.</p>
+
+                            <div className="space-y-4">
+                                {template.checklistItems.length === 0 && <p className="italic text-gray-500 text-sm">No checklist items defined.</p>}
+                                {template.checklistItems.map(item => (
+                                    <div key={item.id} className="p-4 border border-gray-200 rounded-md bg-gray-50 space-y-4 relative">
+                                        <button
+                                            onClick={() => {
+                                                if (confirm("Remove this checklist item?")) {
+                                                    onChange({ ...template, checklistItems: template.checklistItems.filter(i => i.id !== item.id) });
+                                                }
+                                            }}
+                                            className="absolute top-4 right-4 text-red-600 hover:text-red-900 text-sm"
+                                        >
+                                            Remove
+                                        </button>
+
+                                        <div>
+                                            <span className="text-xs font-bold uppercase text-gray-500 tracking-wider">Item ID</span>
+                                            <code className="block mt-1 bg-white border border-gray-200 px-2 py-1 rounded text-sm text-brand-navy font-mono break-all inline-block">{item.id}</code>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-gray-200 pb-4">
+                                            <div>
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Target Badge</label>
+                                                <select className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border bg-white"
+                                                    value={item.badgeId}
+                                                    onChange={(e) => {
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, badgeId: e.target.value } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}>
+                                                    <option value="">Select a Badge...</option>
+                                                    {template.badges.map(b => <option key={b.id} value={b.id}>{b.label}</option>)}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Condition Trigger (Optional)</label>
+                                                <select className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border bg-white"
+                                                    value={item.conditionalOnFeatureId || ""}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value === "" ? undefined : e.target.value;
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, conditionalOnFeatureId: val, required: val ? false : i.required } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}>
+                                                    <option value="">Always Evaluated</option>
+                                                    {template.features.map(f => <option key={f.id} value={f.id}>If Yes: {f.label}</option>)}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="sm:col-span-2">
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Checklist Category</label>
+                                                <input type="text" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border" value={item.category}
+                                                    onChange={(e) => {
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, category: e.target.value } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-2">
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Main Requirement Label</label>
+                                                <input type="text" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border" value={item.label}
+                                                    onChange={(e) => {
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, label: e.target.value } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-2">
+                                                <label className="block text-xs font-bold uppercase text-gray-500 tracking-wider mb-1">Detailed Description</label>
+                                                <textarea rows={2} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-teal focus:ring-brand-teal sm:text-sm p-2 border" value={item.description}
+                                                    onChange={(e) => {
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, description: e.target.value } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-2 flex items-center mt-2">
+                                                <input type="checkbox" className="h-4 w-4 text-brand-teal rounded border-gray-300 focus:ring-brand-teal"
+                                                    checked={item.required}
+                                                    disabled={!!item.conditionalOnFeatureId}
+                                                    onChange={(e) => {
+                                                        const updated = template.checklistItems.map(i => i.id === item.id ? { ...i, required: e.target.checked } : i);
+                                                        onChange({ ...template, checklistItems: updated });
+                                                    }}
+                                                />
+                                                <span className={`ml-2 text-sm font-medium ${item.conditionalOnFeatureId ? "text-gray-400" : "text-gray-700"}`}>
+                                                    Is this requirement absolutely required to pass the audit without conditions?
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </div>

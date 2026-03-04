@@ -72,6 +72,7 @@ export default function PlannerWizard() {
                     {step === 2 && (
                         <QuestionnaireStep
                             template={template}
+                            targetBadges={meta.targetBadges}
                             initialData={profile}
                             onBack={() => setStep(1)}
                             onGenerate={handleGenerate}
