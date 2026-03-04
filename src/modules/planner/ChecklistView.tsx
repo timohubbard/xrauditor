@@ -25,14 +25,16 @@ export default function ChecklistView({ checklist, projectJson, onBack }: Props)
 
     return (
         <div className="space-y-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-4">
-                <h2 className="text-2xl font-bold text-brand-navy">Your Personalised Checklist</h2>
-                <button
-                    onClick={handleDownload}
-                    className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-green hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green"
-                >
-                    Download Project JSON
-                </button>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-200 pb-4 gap-4 w-full">
+                <h2 className="text-2xl font-bold text-brand-navy shrink-1">Your Personalised Checklist</h2>
+                <div className="w-full sm:w-auto flex shrink-0 justify-start sm:justify-end">
+                    <button
+                        onClick={handleDownload}
+                        className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-green hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green whitespace-nowrap"
+                    >
+                        Download Project JSON
+                    </button>
+                </div>
             </div>
 
             {projectJson.projectMeta.targetBadges.includes("badge2") && (
