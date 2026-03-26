@@ -1,0 +1,157 @@
+[[AdvancedFormat]]
+
+[[Block:Phase 1: Platform & Infrastructure]]
+
+[[Question:TE,Essay]]
+REQUIRED FOR ALL VR/XR STUDIES:
+- OpenXR/OpenVR API compliance: All environments must target OpenXR or OpenVR API. Document SDK version.
+- Engine version: Unity 2022.3 LTS or Unreal Engine 5.x (or later) required for interoperability compliance.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF using a standard VR/XR engine (Unity / Unreal):
+- Confirm OpenXR or OpenVR API targeting and document SDK version.
+- Verify hardware meets minimum spec: 90 Hz+ refresh rate, 6DoF tracking, IPD adjustment, and Guardian/Chaperone virtual boundary support.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF NOT using a standard engine / using a custom or proprietary platform:
+- Provide a documentation substitute: full technical spec covering rendering pipeline, tracking system, and API hooks.
+- Justify deviation from standard interoperability guidelines.
+- Upload documentation to OSF or GitHub alongside the project.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF using existing VR assets or environments:
+- Audit all asset EULAs (Unity Asset Store / Unreal Marketplace / Sketchfab).
+- Confirm research use is permitted under each license.
+- Export assets in open formats (FBX / OBJ / glTF) where possible for shareability.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF creating custom VR assets:
+- Apply MIT or CC BY 4.0 license to all custom assets and environment code.
+- Share in open format.
+- Commit environment code to GitHub with semantic versioning before data collection begins.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF intellectual property (IP) barriers prevent full sharing:
+- Provide a documentation substitute: written description of the environment sufficient to reconstruct it, open placeholder assets, and build instructions.
+- Note all restrictions clearly in the project README and OSF page.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Block:Phase 2: Safety & Procedural Setup]]
+
+[[Question:TE,Essay]]
+REQUIRED FOR ALL VR/XR STUDIES:
+- Contraindication screening: Screen all participants for epilepsy, vestibular disorders, severe motion sickness, and pregnancy before participation.
+- Standard battery: Administer a presence measure (IPQ, SUS Slater-Usoh-Steed, or SPES) plus a VR Familiarity 2-item scale in every study.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study uses artificial locomotion (any non-walking movement such as teleportation or continuous/redirected walking):
+- Administer CSQ-VR (Cybersickness Questionnaire for VR) before and after the session, capturing Nausea, Disorientation, and Sopite subscales.
+- Log the locomotion type used (teleportation / continuous / redirected walking).
+- Researcher rates comfort level (Comfortable / Moderate / Intense) at 5-minute intervals.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF sessions are longer than 30 minutes:
+- Schedule mandatory breaks every 20–30 minutes.
+- Re-administer CSQ-VR after each break.
+- Researcher monitors for signs of discomfort: pallor, sweating, postural instability.
+- Document break timing and any adverse events in the session log.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study includes humanoid avatars or virtual agents:
+- Measure the Humanness Index if photorealistic humanoids are used (uncanny valley assessment).
+- Document avatar type: pre-scripted / researcher-controlled / autonomous.
+- Add SPS (Social Presence Scale) to the measurement battery.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study involves high-risk populations or clinical samples:
+- Use an enhanced contraindication checklist with researcher sign-off.
+- Have a clinician on-call if recruiting mental health populations.
+- Lower the session duration limit to 20 minutes.
+- Pre-define stopping rules and a debrief protocol for adverse events.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study uses a multi-site or multi-lab design:
+- Use identical HMD model across all sites where possible.
+- If different HMDs must be used, document for each site: model, IPD range, tracking type, and refresh rate.
+- Share a setup checklist and video walkthrough with each lab.
+- Run a pilot and share pilot data across labs before full data collection begins.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Block:Phase 3: Ethics, Pre-Registration & Data Repositories]]
+
+[[Question:TE,Essay]]
+REQUIRED FOR ALL VR/XR STUDIES:
+- Ethics approval: Obtain IRB/REC approval before data collection. Include a VR-specific risk section in the ethics application covering cybersickness, adverse events, and biometric data handling.
+- Repository setup: Create an OSF project page and a GitHub repo before data collection and link both in the ethics application.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study is confirmatory / hypothesis-driven:
+- Pre-register on OSF Registries or AsPredicted before data collection begins.
+- The pre-registration must include: Hypotheses, Study design, Sample size justification (power analysis), Analysis plan, VR-specific exclusion criteria (HMD removal, boundary breach, sickness dropout, tracking loss)
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study collects biometric or otherwise identifiable data:
+- Ensure the consent form explicitly covers biometric data use.
+- Anonymise or pseudonymise all data before archiving.
+- Use a controlled-access repository: OSF controlled access or Zenodo restricted record.
+- State Data Use Agreement (DUA) requirements clearly in the repository README.
+- Ensure compliance with GDPR (EU) and/or HIPAA (US) as applicable.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the VR environment code is shareable:
+- Commit the environment code to GitHub before data collection.
+- Tag the release version used in the study (e.g., v1.0.0-datacollection).
+- Include in the repository: Build instructions, Full asset list, Engine version, SDK versions, Researcher setup notes.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF participant data can be shared openly:
+- Upload the de-identified dataset with a codebook to OSF under CC BY 4.0 license.
+- The codebook must define: Variable names and units, Sampling rates, Instrument subscales, VR-specific fields: HMD model, tracking type, locomotion method.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Question:TE,Essay]]
+CONDITIONAL: IF the study uses multiple conditions or a longitudinal design:
+- Lock the environment code version before the first condition runs.
+- Document any patch or hotfix applied mid-study with a written rationale.
+- Pre-define the folder and file naming convention in the OSF project wiki before the first data collection session.
+
+Please provide any feedback or comments on these requirements (Optional):
+
+[[Block:General Feedback & Missing Elements]]
+
+[[Question:TE,Essay]]
+OVERALL FEEDBACK:
+Are there any missing elements, broader changes, or suggestions you would recommend for the entire VR/XR Open Science Dashboard?
+
+Please list them here (Optional):
