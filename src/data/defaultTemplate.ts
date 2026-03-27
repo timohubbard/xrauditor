@@ -10,15 +10,15 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
     ],
     features: [
         {
-            id: "deviatesFromOpenVR",
+            id: "deviatesFromOpenXR",
             category: "Platform & Infrastructure",
-            label: "Are you deviating from OpenVR (e.g. using a different SDK)?",
+            label: "Are you deviating from OpenXR (e.g. using a different SDK)?",
             badgeId: "pillar1"
         },
         {
             id: "requiresCustomSystems",
             category: "Platform & Infrastructure",
-            label: "Do your research designs require more advanced hardware or software beyond what OpenVR provides?",
+            label: "Do your research designs require more advanced hardware or software beyond what OpenXR provides?",
             badgeId: "pillar1"
         },
         {
@@ -195,8 +195,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
             id: "p1-ovr-1",
             badgeId: "pillar1",
             category: "Open VR",
-            label: "Implement OpenVR",
-            description: "Implement OpenVR in project.",
+            label: "Implement OpenXR",
+            description: "Implement OpenXR in project.",
             required: true
         },
         {
@@ -204,7 +204,7 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
             badgeId: "pillar1",
             category: "Open VR",
             label: "List SDK Versions",
-            description: "Versions should be listed for OpenVR and any other SDK used. As other technologies arise with a similar architecture to OpenVR, say for audio, researchers should adopt those technologies.",
+            description: "Versions should be listed for OpenXR and any other SDK used. As other technologies arise with a similar architecture to OpenXR, say for audio, researchers should adopt those technologies.",
             required: true
         },
         {
@@ -212,9 +212,9 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
             badgeId: "pillar1",
             category: "Open VR",
             label: "Detail Deviations",
-            description: "If deviating from OpenVR, provide the details of what SDK was used and list what headsets the software will run.",
+            description: "If deviating from OpenXR, provide the details of what SDK was used and list what headsets the software will run.",
             required: false,
-            conditionalOnFeatureId: "deviatesFromOpenVR"
+            conditionalOnFeatureId: "deviatesFromOpenXR"
         },
         {
             id: "p1-cust-1",
