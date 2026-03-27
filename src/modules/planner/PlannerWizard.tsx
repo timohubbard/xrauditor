@@ -12,6 +12,7 @@ import { exportChecklistToWord } from "@/utils/exportChecklist";
 import { pdf } from "@react-pdf/renderer";
 import PdfProjectChecklist from "@/components/PdfProjectChecklist";
 import { slugify } from "@/utils/slugify";
+import { exportMarkdownTemplate } from "@/utils/exportTemplate";
 
 export default function PlannerWizard() {
     const [template] = useState<WorkflowTemplate>(xrAuditorDefaultTemplate);
@@ -86,6 +87,14 @@ export default function PlannerWizard() {
         }
     };
 
+    const handleExportMdTemplate = () => {
+        if (!isExportReady) {
+            alert("Please complete the Project Information first.");
+            return;
+        }
+        exportMarkdownTemplate(fullProjectJson);
+    };
+
     return (
         <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
             <div className="mb-8 border-b border-gray-200 pb-5 flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -123,7 +132,13 @@ export default function PlannerWizard() {
                             <h3 className="text-lg font-bold text-gray-900 mb-2">Export Your Checklist</h3>
                             <p className="text-gray-500 mb-6 text-sm">Download your custom requirements list for documentation, or save the Project JSON to upload later for auditing.</p>
                             
-                            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                            <div className="flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
+                                <button
+                                    onClick={handleExportMdTemplate}
+                                    className="inline-flex justify-center items-center py-3 px-6 border border-brand-purple shadow-sm text-sm font-bold rounded-lg text-fuchsia-700 bg-white hover:bg-fuchsia-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-purple transition-all"
+                                >
+                                    Download Template (.md)
+                                </button>
                                 <button
                                     onClick={handleExportWord}
                                     className="inline-flex justify-center items-center py-3 px-6 border border-brand-teal shadow-sm text-sm font-bold rounded-lg text-brand-teal bg-white hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-teal transition-all"
