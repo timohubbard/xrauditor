@@ -270,6 +270,10 @@ export default function PdfAuditReport({ data }: Props) {
                         <Text style={styles.metaLabel}>Audit Date:</Text>
                         <Text style={styles.metaValue}>{new Date(results.auditedAt).toLocaleString()}</Text>
                     </View>
+                    <View style={styles.metaRow}>
+                        <Text style={styles.metaLabel}>Tool Version:</Text>
+                        <Text style={styles.metaValue}>{data.workflowTemplate.version}</Text>
+                    </View>
                 </View>
 
                 <View style={styles.summarySection}>
@@ -296,7 +300,7 @@ export default function PdfAuditReport({ data }: Props) {
                 </View>
 
                 <Text style={styles.footer} fixed>
-                    Generated via the VR/XR Open Science Application Framework
+                    Generated via the VR/XR Open Science Application Framework ({data.workflowTemplate.version})
                 </Text>
             </Page>
         </Document>

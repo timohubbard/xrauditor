@@ -12,9 +12,9 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex">
-                        <div className="flex-shrink-0 flex items-center mr-8 gap-2">
+                        <div className="flex-shrink-0 flex items-center mr-8 gap-3">
                             <span className="font-bold text-xl tracking-tight">VR Protocols</span>
-                            <span className="text-xs font-mono bg-brand-teal/20 text-brand-teal px-2 py-0.5 rounded-full border border-brand-teal/30 select-none">
+                            <span className="text-sm font-mono bg-brand-teal/20 text-brand-teal px-2.5 py-1 rounded-full border border-brand-teal/30 select-none">
                                 {xrAuditorDefaultTemplate.version}
                             </span>
                         </div>

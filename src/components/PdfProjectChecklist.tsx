@@ -170,6 +170,10 @@ export default function PdfProjectChecklist({ data }: Props) {
                         <Text style={styles.metaLabel}>Generated On:</Text>
                         <Text style={styles.metaValue}>{new Date(data.generatedAt).toLocaleString()}</Text>
                     </View>
+                    <View style={styles.metaRow}>
+                        <Text style={styles.metaLabel}>Tool Version:</Text>
+                        <Text style={styles.metaValue}>{data.workflowTemplate.version}</Text>
+                    </View>
                 </View>
 
                 <View>
@@ -180,7 +184,7 @@ export default function PdfProjectChecklist({ data }: Props) {
                 </View>
 
                 <Text style={styles.footer} fixed>
-                    Generated via the VR/XR Open Science Application Framework
+                    Generated via the VR/XR Open Science Application Framework ({data.workflowTemplate.version})
                 </Text>
             </Page>
         </Document>

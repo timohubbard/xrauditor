@@ -42,6 +42,12 @@ export const exportChecklistToWord = async (data: ProjectJson) => {
             children: [
                 new TextRun({ text: "Generated At: ", bold: true }),
                 new TextRun(new Date(data.generatedAt).toLocaleString()),
+            ]
+        }),
+        new Paragraph({
+            children: [
+                new TextRun({ text: "Tool Version: ", bold: true }),
+                new TextRun(data.workflowTemplate.version),
             ],
             spacing: { after: 400 }
         })

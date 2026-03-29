@@ -8,7 +8,8 @@ export const exportMarkdownTemplate = (data: ProjectJson) => {
     let mdContent = `# ${data.projectMeta.projectTitle || "Project"} - Documentation Template\n\n`;
     mdContent += `**Researcher:** ${data.projectMeta.researcherName}\n`;
     mdContent += `**Institution:** ${data.projectMeta.institution}\n`;
-    mdContent += `**Generated At:** ${new Date(data.generatedAt).toLocaleString()}\n\n`;
+    mdContent += `**Generated At:** ${new Date(data.generatedAt).toLocaleString()}\n`;
+    mdContent += `**Tool Version:** ${data.workflowTemplate.version}\n\n`;
     mdContent += `---\n\n`;
 
     mdContent += `*This document is a generated template based on your specific VR/XR project profile. Fill in the requested details below to complete your documentation for open science repositories.*\n\n`;

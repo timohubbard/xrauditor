@@ -9,7 +9,7 @@ export function exportJsonAsBlob(data: ProjectJson): void {
     const dateStr = new Date(data.generatedAt).toISOString().split("T")[0];
     const filename = `VR_Badge_Project_${slugify(
         data.projectMeta.projectTitle
-    )}_${dateStr}.json`;
+    )}_${data.workflowTemplate?.version}_${dateStr}.json`;
 
     triggerDownload(url, filename);
 }
@@ -28,6 +28,7 @@ export function exportReportAsText(data: ProjectJson): void {
     lines.push(`Researcher: ${data.projectMeta.researcherName}`);
     lines.push(`Institution: ${data.projectMeta.institution}`);
     lines.push(`Audit Date: ${new Date(results.auditedAt).toLocaleString()}`);
+    lines.push(`Tool Version: ${data.workflowTemplate.version}`);
     lines.push(``);
     lines.push(`--- SUMMARY ---`);
 
