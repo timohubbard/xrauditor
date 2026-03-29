@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VR/XR Open Science Badge Platform",
+  title: "VR Protocols",
   description: "Generate open science compliance checklists and project audits for VR and XR academic research projects.",
 };
 

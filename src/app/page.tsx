@@ -16,7 +16,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl tracking-tight mb-4">
-            VR/XR Open Science Auditor
+            VR Protocols
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-xl text-brand-teal font-medium mb-12">
             Plan, track, and verify your immersive research's compliance with standardized interoperability and data-sharing frameworks.
@@ -73,7 +73,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="-mt-16 pb-12 relative z-20">
+      <div className="mt-8 pb-12 relative z-20">
         <PlannerWizard />
       </div>
       

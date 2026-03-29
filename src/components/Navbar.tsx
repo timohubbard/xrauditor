@@ -12,7 +12,7 @@ export default function Navbar() {
                 <div className="flex justify-between h-16">
                     <div className="flex">
                         <div className="flex-shrink-0 flex items-center mr-8">
-                            <span className="font-bold text-xl tracking-tight">Open Science VR/XR</span>
+                            <span className="font-bold text-xl tracking-tight">VR Protocols</span>
                         </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                             <Link
