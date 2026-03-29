@@ -2,7 +2,7 @@ import { WorkflowTemplate } from "./schema";
 
 export const xrAuditorDefaultTemplate: WorkflowTemplate = {
     templateName: "VR/XR Open Science Framework",
-    version: "2.0.0",
+    version: "v.0.62",
     badges: [
         { id: "pillar1", label: "Pillar 1: Interoperability" },
         { id: "pillar2", label: "Pillar 2: Procedural Standardisation" },
@@ -688,7 +688,7 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
             originalBadgeId: "pillar2",
             category: "Safety",
             label: "Participant Observation",
-            description: "Avoid leaving ambulatory participants in VR unattended. If maintaing a sense of privacy is a concern, then keep watch over participants through a real-time video feed.",
+            description: "Avoid leaving ambulatory participants in VR unattended. If maintaining a sense of privacy is a concern, then keep watch over participants through a real-time video feed.",
             required: true
         },
         {
@@ -742,7 +742,7 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
             originalBadgeId: "pillar2",
             category: "Safety",
             label: "Locomotion Mode",
-            description: "Minimize or avoid using artificial locomotion (e.g., joystick-based movement) in favor of natural locomotion (e.g., walking) to reduce cybersickness. If artificial locomotion is necessary, use slow speeds, short bursts (e.g., teleportation), or blurr non-salient regions.",
+            description: "Minimize or avoid using artificial locomotion (e.g., joystick-based movement) in favor of natural locomotion (e.g., walking) to reduce cybersickness. If artificial locomotion is necessary, use slow speeds, short bursts (e.g., teleportation), or blur non-salient regions.",
             required: true
         },
         {
