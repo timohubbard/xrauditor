@@ -6,7 +6,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
     badges: [
         { id: "pillar1", label: "Pillar 1: Interoperability" },
         { id: "pillar2", label: "Pillar 2: Procedural Standardisation" },
-        { id: "pillar3", label: "Pillar 3: Data Sharing" }
+        { id: "pillar3", label: "Pillar 3: Data Sharing" },
+        { id: "badge_hse", label: "Health, Safety, and Ethics" }
     ],
     features: [
         {
@@ -441,7 +442,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-1",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Informed Consent Limits",
             description: "Ensure participants understand the immersive nature of an VR simulation, including the heightened physical (e.g., cybersickness) and psychological (e.g., emotional distress) impacts that might arise. Provide participants with the ability to withdraw at any time without penalty.",
@@ -449,7 +451,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-2",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Informed Decision on Data",
             description: "Allow participants to make informed decisions about how their data is collected, stored, and shared, with particular attention to sensitive data like biometric or interaction data.",
@@ -457,7 +460,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-3",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Privacy Regulations (GDPR)",
             description: "Ensure that all data collection, handling, and storage comply with relevant privacy regulations (e.g., GDPR) to protect participants' personal information.",
@@ -465,7 +469,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-4",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Robust Encryption",
             description: "Implement robust encryption protocols for all sensitive VR-related data, including biometric, spatial, and interaction data, both in transit and at rest. Use end-to-end encryption when transferring data to external servers or collaborating institutions.",
@@ -473,7 +478,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-5",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Explicit Data Usage",
             description: "Be explicit about the type of data being collected and the ways in which it will be used, including the potential for long-term storage or reuse of the data in future studies.",
@@ -481,7 +487,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-6",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "IRB Approval",
             description: "Acquire ethical approval from a relevant Institutional Review Board (IRB) or equivalent ethics committee.",
@@ -489,7 +496,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-7",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Evaluate Emotional Distress",
             description: "Evaluate the potential for VR simulations to create intense emotional responses due to heightened immersion.",
@@ -497,7 +505,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-8",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Specify Distressing Scenarios",
             description: "Inform participants about the immersive nature of VR and the potential for heightened emotional reactions. Specify any potentially distressing scenarios in the consent forms.",
@@ -505,7 +514,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-9",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Mitigate Psychological Harm",
             description: "Ensure measures are in place to mitigate any lasting psychological harm.",
@@ -531,7 +541,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-eth-12",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Ethics",
             label: "Respect Personal Space",
             description: "Unless the research question requires otherwise and consent has been acquired, ensure that both the physical and virtual environments respect personal space, avoiding (virtual) humans from invading the participants’ proximity.",
@@ -628,7 +639,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-1",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Hardware Setup",
             description: "Use headsets with 90Hz refresh rates or higher and 6DoF (Six Degrees of Freedom) tracking to reduce latency and improve the user experience, as lower refresh rates may induce cybersickness.",
@@ -636,7 +648,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-2",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "IPD Measurement",
             description: "Ensure participants' interpupillary distance (IPD) is measured and set correctly to avoid eye strain and discomfort.",
@@ -644,7 +657,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-3",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Physical Research Space",
             description: "Carefully design the physical research space to eliminate tripping hazards, sharp objects, or any furniture that participants may accidentally collide with while in the VR environment.",
@@ -652,7 +666,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-4",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Virtual Boundary Systems",
             description: "Implement virtual boundary systems (e.g., Oculus Guardian, HTC Chaperone) that alert participants when they approach the edges of the prepared lab space.",
@@ -660,7 +675,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-5",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Emergency Readiness",
             description: "Avoid equipment setups that block exits or walkways. Ensure that participants can quickly remove headsets and evacuate the area in case of emergencies.",
@@ -668,7 +684,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-6",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Participant Observation",
             description: "Avoid leaving ambulatory participants in VR unattended. If maintaing a sense of privacy is a concern, then keep watch over participants through a real-time video feed.",
@@ -676,7 +693,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-7",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Audio Level",
             description: "Set accompanying audio to an acceptable level that will not induce hearing damage.",
@@ -684,7 +702,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-8",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Screen Casting",
             description: "Enable screen casting to monitor participants’ behavior in both the physical and virtual environments, as long as it does not impede participants’ experience.",
@@ -701,7 +720,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-10",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Hygiene",
             description: "Clean headsets and controllers regularly with disinfecting wipes for lenses and UV sanitization for the headset and controllers.",
@@ -718,7 +738,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-12",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Locomotion Mode",
             description: "Minimize or avoid using artificial locomotion (e.g., joystick-based movement) in favor of natural locomotion (e.g., walking) to reduce cybersickness. If artificial locomotion is necessary, use slow speeds, short bursts (e.g., teleportation), or blurr non-salient regions.",
@@ -726,7 +747,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-13",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Smooth Visual Movements",
             description: "Design VR environments with smooth, predictable visual movements to reduce motion-to-visual conflicts that can cause disorientation or nausea.",
@@ -734,7 +756,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-14",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Gradual Acclimation",
             description: "Allow participants to gradually acclimate to the virtual environment by starting with simple, low-intensity tasks before progressing to more complex or intense experiences.",
@@ -742,7 +765,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-15",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Controls Training",
             description: "Provide instructions and training to help participants adjust to the controls and navigation methods used in the VR simulation.",
@@ -750,7 +774,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-16",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Comfort Rating System",
             description: "Adopt a comfort rating system to categorize the intensity of the VR simulation and inform participants of the expected comfort level beforehand.",
@@ -758,7 +783,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p2-saf-17",
-            badgeId: "pillar2",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar2",
             category: "Safety",
             label: "Rest Space",
             description: "For moderate or intense VR simulations, provide participants with a space to rest after completing the simulation.",
@@ -766,7 +792,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p3-ers-1",
-            badgeId: "pillar3",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar3",
             category: "Ensuring Rights to Share",
             label: "Acquire Rights",
             description: "Acquire the rights to share the VR simulation and its assets free of charge to other scholars.",
@@ -783,7 +810,8 @@ export const xrAuditorDefaultTemplate: WorkflowTemplate = {
         },
         {
             id: "p3-ers-3",
-            badgeId: "pillar3",
+            badgeId: "badge_hse",
+            originalBadgeId: "pillar3",
             category: "Ensuring Rights to Share",
             label: "Ethics Variables",
             description: "Ethics approval for the study establishes which variables from the data collection can be shared publicly without violating participants' privacy.",

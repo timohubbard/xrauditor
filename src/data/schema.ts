@@ -23,6 +23,7 @@ export interface WorkflowChecklistItem {
     description: string;
     required: boolean;
     conditionalOnFeatureId?: string; // ID of the WorkflowFeature that triggers this
+    originalBadgeId?: string; // ID of the Badge this item originally belonged to, used for dynamic pull-up exports
 }
 
 export interface WorkflowTemplate {

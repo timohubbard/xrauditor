@@ -33,6 +33,16 @@ export default function QuestionnaireStep({ template, targetBadges, data, onChan
     };
 
     if (relevantFeatures.length === 0) {
+        if (targetBadges.includes("badge_hse") && targetBadges.length === 1) {
+            return (
+                <div className="p-8 text-center bg-brand-navy bg-opacity-5 rounded-lg border border-brand-navy border-opacity-10 mt-10">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">Health, Safety, and Ethics Selected</h3>
+                    <p className="text-gray-600">This module contains universal standards and does not require a custom questionnaire.</p>
+                    <p className="mt-2 text-brand-teal font-semibold">Proceed down to review your compiled Checklist.</p>
+                </div>
+            );
+        }
+
         return (
             <div className="p-8 text-center text-gray-500 bg-gray-50 rounded-lg border border-gray-200 mt-6">
                 Please select a framework badge above to begin dynamically answering your study feature questions.

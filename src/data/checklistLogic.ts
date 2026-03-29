@@ -14,8 +14,14 @@ export function generateChecklist(
 
     // Evaluate each checklist item in the template
     template.checklistItems.forEach((item) => {
+        // Enforce specific pull-up assignment rule for HSE items
+        let finalBadgeId = item.badgeId;
+        if (item.originalBadgeId && targetBadges.includes(item.originalBadgeId)) {
+            finalBadgeId = item.originalBadgeId;
+        }
+
         // Skip if the user didn't target the badge this item belongs to
-        if (!targetBadges.includes(item.badgeId)) {
+        if (!targetBadges.includes(finalBadgeId)) {
             return;
         }
 
@@ -39,7 +45,7 @@ export function generateChecklist(
                 required: item.required,
             };
 
-            result[item.badgeId].push(cleanItem);
+            result[finalBadgeId].push(cleanItem);
         }
     });
 
